@@ -6,7 +6,7 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   colorScheme?: "primary" | "secondary";
 }
 
-const Button: React.FC<Props> = ({children, colorScheme = "secondary", ...props}) => {
+const Button: React.FC<Props> = ({ children, colorScheme = "secondary", ...props }) => {
   return (
     <button className={`${styles.container} ${styles[colorScheme]}`} {...props}>
       {children}
