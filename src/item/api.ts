@@ -1,12 +1,6 @@
 import { Item } from "./types";
-/* 
-const MOCK: Item[] = [
-  { id: 1, text: "helado de pejelagarto" },
-  { id: 2, text: "sandwich de pejelagarto" },
-  { id: 3, text: "Sushi de pejelagarto" },
-]; */
 
-function getFromLocalStorage(key: string) {
+const getFromLocalStorage = (key: string): Item[] => {
   let items: Item[] = [];
 
   const result = localStorage.getItem(key) || "";
@@ -14,7 +8,7 @@ function getFromLocalStorage(key: string) {
   if (result !== "") items = JSON.parse(result);
 
   return items;
-}
+};
 
 export default {
   list: (): Promise<Item[]> => {
