@@ -1,8 +1,10 @@
 import * as React from "react";
 
 import api from "../item/api";
-import {Item} from "../item/types";
+import { Item } from "../item/types";
 import Button from "../ui/controls/buttons";
+import Modal, { ModalFooter } from "../ui/controls/modal";
+import TextField from "../ui/inputs/text-field";
 
 import styles from "./App.module.scss";
 
@@ -11,9 +13,14 @@ enum Status {
   Success = "success",
 }
 
+interface Form extends HTMLFormElement {
+  text: HTMLInputElement;
+}
+
 const App: React.FC = () => {
   const [items, setItems] = React.useState<Item[]>([]);
   const [status, setStatus] = React.useState<Status>(Status.Init);
+  const [isModalVisible, toggleModal] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     api.list().then((items) => {
@@ -24,6 +31,18 @@ const App: React.FC = () => {
 
   function handleDeleteItem(id: number) {
     api.remove(id).then(() => setItems((items) => items.filter((item) => item.id !== id)));
+  }
+
+  function add(event: React.FormEvent<Form>) {
+    event.preventDefault();
+    const text = event.currentTarget.text.value.trim();
+
+    if (!text) return;
+
+    api.create(text).then((item) => {
+      setItems((items) => items.concat(item));
+      toggleModal(false);
+    });
   }
 
   if (status === Status.Init) return <span>Loading...</span>;
@@ -44,7 +63,25 @@ const App: React.FC = () => {
         ))}
       </ul>
 
-      <Button colorScheme="primary">Add Item</Button>
+      <Button autoFocus colorScheme="primary" onClick={() => toggleModal(true)}>
+        Add Item
+      </Button>
+      {isModalVisible && (
+        <Modal onClose={() => toggleModal(false)}>
+          <form onSubmit={add}>
+            <h2>Add item</h2>
+            <TextField autoFocus name="text" type="text" />
+            <ModalFooter>
+              <Button type="button" onClick={() => toggleModal(false)}>
+                Cancel
+              </Button>
+              <Button colorScheme="primary" type="submit">
+                Add
+              </Button>
+            </ModalFooter>
+          </form>
+        </Modal>
+      )}
     </main>
   );
 };
