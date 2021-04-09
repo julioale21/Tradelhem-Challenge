@@ -3,11 +3,8 @@ import React from "react";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import styles from "./List.module.scss";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface Props {}
-
-const List: React.FC<Props> = () => {
-  return <div>{`<List />`}</div>;
+const List: React.FC = ({ children }) => {
+  return <ul className={styles.container}>{children}</ul>;
 };
 
 export default List;
