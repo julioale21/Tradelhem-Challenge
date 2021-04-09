@@ -8,11 +8,10 @@ const MOCK: Item[] = [
 
 function getFromLocalStorage(key: string) {
   let items: Item[] = [];
+
   const result = localStorage.getItem(key) || "";
 
-  if (result !== "") {
-    items = JSON.parse(result);
-  }
+  if (result !== "") items = JSON.parse(result);
 
   return items;
 }
