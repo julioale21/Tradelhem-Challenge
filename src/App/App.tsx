@@ -5,6 +5,7 @@ import { Item } from "../item/types";
 import Button from "../ui/controls/buttons";
 import Modal, { ModalFooter } from "../ui/controls/modal";
 import TextField from "../ui/inputs/text-field";
+import List, { ListItem } from "../item/components";
 
 import styles from "./App.module.scss";
 
@@ -54,14 +55,13 @@ const App: React.FC = () => {
         <h3>{items.length} items</h3>
       </header>
 
-      <ul>
+      <List>
         {items.map((item) => (
-          <li key={item.id}>
-            <span>{item.text}</span>
-            <button onClick={() => handleDeleteItem(item.id)}>delete</button>
-          </li>
+          <ListItem key={item.id} onRemove={() => handleDeleteItem(item.id)}>
+            {item.text}
+          </ListItem>
         ))}
-      </ul>
+      </List>
 
       <Button autoFocus colorScheme="primary" onClick={() => toggleModal(true)}>
         Add Item
